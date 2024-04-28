@@ -4,20 +4,21 @@ const sendToken = require("../utils/sendTOken");
 
 exports.signup = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (!name || !email || !password) {
       return next(new CustomError("Name, email or password is missing", 400));
     }
 
     if (email && (await User.findOne({ email }))) {
-      res.status(401).send("User already exists");
+      return res.status(401).send("User already exists");
     }
 
     const user = await User.create({
       name,
       email,
       password,
+      role,
     });
 
     sendToken(user, res);

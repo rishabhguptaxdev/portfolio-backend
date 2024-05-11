@@ -2,6 +2,20 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const user = require("./user");
 
+const skillSchema = new mongoose.Schema({
+  skillName: {
+    type: String,
+  },
+  subTechName: {
+    type: [String],
+  },
+  ratings: {
+    type: Number,
+    min: [0, "Skills ratings can't be less than 0"],
+    max: [100, "Skills ratings can't be greater than 100"],
+  },
+});
+
 const aboutSchema = new mongoose.Schema({
   resumeUrl: {
     type: String,
@@ -15,7 +29,7 @@ const aboutSchema = new mongoose.Schema({
     type: String,
   },
   skills: {
-    type: [String],
+    type: skillSchema,
   },
   dateOfBirth: {
     type: Date,

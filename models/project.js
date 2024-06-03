@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 const DatePartsSchema = require("./date");
 const User = require("./user");
 
@@ -17,14 +18,17 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide Project name"],
   },
-  projectRepositoryURLs: {
+  projectRepositoryURL: {
     type: String,
+    validate: [validator.isURL, "Please provide valid URL"],
   },
-  projectLiveURLs: {
+  projectLiveURL: {
     type: String,
+    validate: [validator.isURL, "Please provide valid URL"],
   },
   projectThumbnailURLs: {
     type: [String],
+    // validate: [validator.isURL, "Please provide valid URL"],
     required: [true, "Please provide thumbnail for the project"],
   },
   projectDescription: {
@@ -46,7 +50,8 @@ const ProjectSchema = new mongoose.Schema({
     type: [String],
   },
   user: {
-    type: User,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User,
     required: [true, "Provide user associated to the project"],
   },
 });

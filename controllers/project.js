@@ -26,8 +26,9 @@ exports.addProject = async (req, res, next) => {
       contributers,
       techUsed,
       dateOfProject,
-      userId,
     } = req.body;
+
+    const userId = req.user.id;
 
     if (!projectName || !projectThumbnailURLs || !projectDescription) {
       return next(new CustomError("Few project details not found", 400));

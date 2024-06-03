@@ -7,12 +7,13 @@ const {
   updateProject,
   deleteProject,
 } = require("../controllers/project");
+const { isLoggedIn, customRole } = require("../middlewares/user");
 
 router
   .route("/project")
   .get(getAllProjects)
-  .post(addProject)
-  .patch(updateProject)
-  .delete(deleteProject);
+  .post(isLoggedIn, customRole("user"), addProject)
+  .patch(isLoggedIn, customRole("user"), updateProject)
+  .delete(isLoggedIn, customRole("user"), deleteProject);
 
 module.exports = router;

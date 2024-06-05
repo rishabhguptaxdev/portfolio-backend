@@ -7,8 +7,15 @@ exports.getAllProjects = async (req, res, next) => {
     const { userId } = req.body ?? "";
 
     const projects = await Project.find({ user: userId });
-    res.json({ ...projects });
-    res.json({ name: "portfolio" });
+
+    if (!projects.length) {
+      res.json({
+        success: false,
+        message: `Oops no project found`,
+      });
+    }
+
+    res.json(projects);
   } catch (error) {
     console.error("Something went wrong while getting Projects from DB", error);
   }

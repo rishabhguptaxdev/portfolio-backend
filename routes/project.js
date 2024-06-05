@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   getAllProjects,
+  getProjectById,
   addProject,
   updateProject,
   deleteProject,
@@ -12,7 +13,11 @@ const { isLoggedIn, customRole } = require("../middlewares/user");
 router
   .route("/project")
   .get(getAllProjects)
-  .post(isLoggedIn, customRole("user"), addProject)
+  .post(isLoggedIn, customRole("user"), addProject);
+
+router
+  .route("/project/:projectid")
+  .get(isLoggedIn, customRole("user", "admin"), getProjectById)
   .patch(isLoggedIn, customRole("user"), updateProject)
   .delete(isLoggedIn, customRole("user"), deleteProject);
 

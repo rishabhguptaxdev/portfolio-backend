@@ -80,7 +80,33 @@ exports.updateProject = async () => {
   } catch (error) {}
 };
 
-exports.deleteProject = async () => {
+exports.deleteProject = async (req, res, next) => {
+  const userId = req.user.id;
+  const projectId = req.params.projectid;
+
   try {
-  } catch (error) {}
+    const deletedProject = await Project.findOneAndDelete({
+      _id: new mongoose.Types.ObjectId(projectId),
+      user: new mongoose.Types.ObjectId(userId),
+    });
+
+    if (!deletedProject) {
+      res.json({
+        success: false,
+        message: `Project not found with id: ${projectId} associated to user with id: ${userId}`,
+      });
+    }
+
+    res.json({
+      success: true,
+      message: `Project ${
+        deletedProject.projectName || ""
+      } has been deleted succesfully`,
+    });
+  } catch (error) {
+    console.error(
+      `Something went wrong while deleting project with id: ${projectId}`,
+      error
+    );
+  }
 };

@@ -1,6 +1,7 @@
 const Project = require("../models/project");
 
 const CustomError = require("../utils/CustomErrors");
+const mongoose = require("mongoose");
 
 exports.getAllProjects = async (req, res, next) => {
   try {
@@ -18,6 +19,32 @@ exports.getAllProjects = async (req, res, next) => {
     res.json(projects);
   } catch (error) {
     console.error("Something went wrong while getting Projects from DB", error);
+  }
+};
+
+exports.getProjectById = async (req, res, next) => {
+  const projectId = req.params.projectid;
+  const userId = req.user.id;
+
+  try {
+    const project = await Project.findOne({
+      _id: new mongoose.Types.ObjectId(projectId),
+      user: new mongoose.Types.ObjectId(userId),
+    });
+
+    if (!project) {
+      res.json({
+        success: false,
+        message: `Project not found`,
+      });
+    }
+
+    res.json(project);
+  } catch (error) {
+    console.error(
+      `Something went wrong while getting project with id: ${projectId}`,
+      error
+    );
   }
 };
 

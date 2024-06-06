@@ -10,7 +10,7 @@ exports.getAllProjects = async (req, res, next) => {
     const projects = await Project.find({ user: userId });
 
     if (!projects.length) {
-      res.json({
+      return res.json({
         success: false,
         message: `Oops no project found`,
       });
@@ -33,7 +33,7 @@ exports.getProjectById = async (req, res, next) => {
     });
 
     if (!project) {
-      res.json({
+      return res.json({
         success: false,
         message: `Project not found`,
       });
@@ -91,7 +91,7 @@ exports.deleteProject = async (req, res, next) => {
     });
 
     if (!deletedProject) {
-      res.json({
+      return res.json({
         success: false,
         message: `Project not found with id: ${projectId} associated to user with id: ${userId}`,
       });

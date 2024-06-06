@@ -19,6 +19,10 @@ exports.getAllProjects = async (req, res, next) => {
     res.json(projects);
   } catch (error) {
     console.error("Something went wrong while getting Projects from DB", error);
+    res.json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -39,12 +43,19 @@ exports.getProjectById = async (req, res, next) => {
       });
     }
 
-    res.json(project);
+    res.json({
+      success: true,
+      project,
+    });
   } catch (error) {
     console.error(
       `Something went wrong while getting project with id: ${projectId}`,
       error
     );
+    res.json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -69,9 +80,13 @@ exports.addProject = async (req, res, next) => {
     }
 
     const addedProject = await Project.create({ ...req.body, user: userId });
-    res.json(addedProject);
+    res.json({ success: true, addedProject });
   } catch (error) {
     console.error("Something went wrong while adding Project in DB", error);
+    res.json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -108,5 +123,6 @@ exports.deleteProject = async (req, res, next) => {
       `Something went wrong while deleting project with id: ${projectId}`,
       error
     );
+    res.json({ success: false, message: error.message });
   }
 };

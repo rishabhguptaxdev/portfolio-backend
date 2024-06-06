@@ -61,23 +61,7 @@ exports.getProjectById = async (req, res, next) => {
 
 exports.addProject = async (req, res, next) => {
   try {
-    const {
-      projectRepositoryURLs,
-      projectLiveURLs,
-      projectThumbnailURLs,
-      projectName,
-      projectDescription,
-      projectCategory,
-      contributers,
-      techUsed,
-      dateOfProject,
-    } = req.body;
-
     const userId = req.user.id;
-
-    if (!projectName || !projectThumbnailURLs || !projectDescription) {
-      return next(new CustomError("Few project details not found", 400));
-    }
 
     const addedProject = await Project.create({ ...req.body, user: userId });
     res.json({ success: true, addedProject });

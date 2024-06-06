@@ -74,9 +74,45 @@ exports.addProject = async (req, res, next) => {
   }
 };
 
-exports.updateProject = async () => {
+exports.updateProject = async (req, res, next) => {
+  const projectId = req.params.projectid;
+  const userId = req.user.id;
   try {
-  } catch (error) {}
+    const updatedProject = await Project.findOneAndUpdate(
+      {
+        _id: new mongoose.Types.ObjectId(projectId),
+        user: new mongoose.Types.ObjectId(userId),
+      },
+      {
+        $set: {
+          ...req.body,
+        },
+      },
+      {
+        new: true, // returns the updated document
+        runValidators: true, // runs validation on the update
+      }
+    );
+
+    if (!updatedProject) {
+      return res.json({
+        success: false,
+        message: "Project not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Project update successfully",
+      updatedProject,
+    });
+  } catch (error) {
+    console.error("Something went wrong while updating Project", error);
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 exports.deleteProject = async (req, res, next) => {

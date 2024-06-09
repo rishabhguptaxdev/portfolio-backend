@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const home = require("./routes/home");
 const user = require("./routes/user");
 const project = require("./routes/project");
+const workexperience = require("./routes/workexperience");
 
 require("dotenv").config();
 
@@ -22,5 +23,6 @@ app.use(morgan("tiny"));
 app.use("/api/v1", home);
 app.use("/api/v1", user);
 app.use("/api/v1", project);
+app.use("/api/v1", workexperience);
 
 module.exports = app;

@@ -14,6 +14,7 @@ const educationSchema = new mongoose.Schema({
   },
   durationOfEducation: {
     type: DatePartsSchema,
+    required: [true, "Please provide duration of education"],
   },
   typeOfInstitution: {
     type: String,
@@ -21,6 +22,7 @@ const educationSchema = new mongoose.Schema({
   },
   degree: {
     type: String,
+    required: [true, "Please provide the degree name"],
   },
   grade: {
     type: String,
@@ -30,7 +32,8 @@ const educationSchema = new mongoose.Schema({
     maxlength: [100, "Max length of description is 100 characters"],
   },
   user: {
-    type: user,
+    type: mongoose.Types.ObjectId,
+    ref: "User",
     required: [true, "User associated to institution is required"],
   },
 });

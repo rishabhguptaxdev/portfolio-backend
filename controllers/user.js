@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const CustomError = require("../utils/CustomErrors");
 const sendToken = require("../utils/sendTOken");
 
 exports.signup = async (req, res, next) => {
@@ -7,11 +6,16 @@ exports.signup = async (req, res, next) => {
     const { name, email, password, role } = req.body;
 
     if (!name || !email || !password) {
-      return next(new CustomError("Name, email or password is missing", 400));
+      return res.status(401).json({
+        success: false,
+        message: "Name, email, or password is missing",
+      });
     }
 
     if (email && (await User.findOne({ email }))) {
-      return res.status(401).send("User already exists");
+      return res
+        .status(401)
+        .json({ success: false, message: "User already exists" });
     }
 
     const user = await User.create({
@@ -24,7 +28,7 @@ exports.signup = async (req, res, next) => {
     sendToken(user, res);
   } catch (error) {
     console.error("Something went wrong while signup", error);
-    throw error;
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -33,24 +37,31 @@ exports.login = async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return next(new CustomError("Email or Password missing", 400));
+      return res.status(401).json({
+        success: false,
+        message: "Email or passowrd is missing",
+      });
     }
 
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-      return next(new CustomError("User is not registered", 400));
+      res
+        .status(401)
+        .json({ success: false, message: "user is not registered" });
     }
 
     const isValidPassword = await user.isValidPassword(password);
 
     if (!isValidPassword) {
-      return next(new CustomError("Password is inncorrect", 400));
+      return res
+        .status(401)
+        .json({ success: false, message: "Password is invalid" });
     }
 
     sendToken(user, res);
   } catch (error) {
     console.error("Something went wrong while login", error);
-    throw error;
+    res.status(500).json({ success: false, message: error.message });
   }
 };

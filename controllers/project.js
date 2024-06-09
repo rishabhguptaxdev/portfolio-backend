@@ -1,6 +1,5 @@
 const Project = require("../models/project");
 
-const CustomError = require("../utils/CustomErrors");
 const mongoose = require("mongoose");
 
 exports.getAllProjects = async (req, res, next) => {
@@ -10,13 +9,13 @@ exports.getAllProjects = async (req, res, next) => {
     const projects = await Project.find({ user: userId });
 
     if (!projects.length) {
-      return res.json({
+      return res.status(200).json({
         success: false,
         message: `Oops no project found`,
       });
     }
 
-    res.json(projects);
+    res.status(200).json(projects);
   } catch (error) {
     console.error("Something went wrong while getting Projects from DB", error);
     res.json({
@@ -37,13 +36,13 @@ exports.getProjectById = async (req, res, next) => {
     });
 
     if (!project) {
-      return res.json({
+      return res.status(200).json({
         success: false,
         message: `Project not found`,
       });
     }
 
-    res.json({
+    res.status(200).json({
       success: true,
       project,
     });
@@ -52,7 +51,7 @@ exports.getProjectById = async (req, res, next) => {
       `Something went wrong while getting project with id: ${projectId}`,
       error
     );
-    res.json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -64,10 +63,10 @@ exports.addProject = async (req, res, next) => {
     const userId = req.user.id;
 
     const addedProject = await Project.create({ ...req.body, user: userId });
-    res.json({ success: true, addedProject });
+    res.status(200).json({ success: true, addedProject });
   } catch (error) {
     console.error("Something went wrong while adding Project in DB", error);
-    res.json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -95,20 +94,20 @@ exports.updateProject = async (req, res, next) => {
     );
 
     if (!updatedProject) {
-      return res.json({
+      return res.status(200).json({
         success: false,
         message: "Project not found",
       });
     }
 
-    res.json({
+    res.status(200).json({
       success: true,
       message: "Project update successfully",
       updatedProject,
     });
   } catch (error) {
     console.error("Something went wrong while updating Project", error);
-    res.json({
+    res.status(500).json({
       success: false,
       message: error.message,
     });
@@ -126,13 +125,13 @@ exports.deleteProject = async (req, res, next) => {
     });
 
     if (!deletedProject) {
-      return res.json({
+      return res.status(200).json({
         success: false,
         message: `Project not found with id: ${projectId} associated to user with id: ${userId}`,
       });
     }
 
-    res.json({
+    res.status(200).json({
       success: true,
       message: `Project ${
         deletedProject.projectName || ""
@@ -143,6 +142,6 @@ exports.deleteProject = async (req, res, next) => {
       `Something went wrong while deleting project with id: ${projectId}`,
       error
     );
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };

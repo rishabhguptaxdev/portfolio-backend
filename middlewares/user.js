@@ -23,6 +23,7 @@ exports.isLoggedIn = async (req, res, next) => {
       "Something went wrong while verifying user loggedIn status",
       error
     );
+    res.json({ success: false, message: error.message });
   }
 };
 

@@ -23,13 +23,16 @@ const workExperienceSchema = new mongoose.Schema({
   },
   durationOfWork: {
     type: DatePartsSchema,
+    required: [true, "Please provide the work experience date"],
   },
   jobDesignation: {
     type: String,
+    required: [true, "Please provide the work experience date"],
   },
   employmentType: {
     type: String,
     enum: employmentTypeEnum,
+    required: [true, "Please provide the work experience date"],
   },
   location: {
     type: String,
@@ -42,7 +45,9 @@ const workExperienceSchema = new mongoose.Schema({
     type: [String],
   },
   user: {
-    type: User,
+    type: mongoose.Types.ObjectId,
+    ref: "User",
+    required: [true, "Provide user associated to the Work experience"],
   },
 });
 

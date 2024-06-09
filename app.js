@@ -8,6 +8,7 @@ const user = require("./routes/user");
 const project = require("./routes/project");
 const workexperience = require("./routes/workexperience");
 const education = require("./routes/education");
+const about = require("./routes/about");
 
 require("dotenv").config();
 
@@ -26,5 +27,6 @@ app.use("/api/v1", user);
 app.use("/api/v1", project);
 app.use("/api/v1", workexperience);
 app.use("/api/v1", education);
+app.use("/api/v1", about);
 
 module.exports = app;

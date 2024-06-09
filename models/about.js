@@ -29,12 +29,13 @@ const aboutSchema = new mongoose.Schema({
     type: String,
   },
   skills: {
-    type: skillSchema,
+    type: [skillSchema],
   },
   dateOfBirth: {
     type: Date,
   },
   yearsOfExperience: {
+    // TODO: This should be derived from all experiences in workexperience model
     type: Number,
   },
   tagline: {
@@ -50,7 +51,8 @@ const aboutSchema = new mongoose.Schema({
     type: [String],
   },
   user: {
-    type: user,
+    type: mongoose.Types.ObjectId,
+    ref: "User",
     required: [true, "User associated to about is required"],
   },
 });

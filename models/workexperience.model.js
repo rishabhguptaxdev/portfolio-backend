@@ -1,7 +1,6 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-const DatePartsSchema = require("./date");
-const User = require("./user");
+import mongoose from "mongoose";
+import validator from "validator";
+import DatePartsSchema from "./date.model.js";
 
 const employmentTypeEnum = [
   "FULLTIME",
@@ -19,7 +18,7 @@ const workExperienceSchema = new mongoose.Schema({
   },
   companyWebsiteURL: {
     type: String,
-    validate: [validator.isURL, "Please provide valid URL of company"],
+    validate: [validator.isURL, "Please provide a valid URL of company"],
   },
   durationOfWork: {
     type: DatePartsSchema,
@@ -27,12 +26,12 @@ const workExperienceSchema = new mongoose.Schema({
   },
   jobDesignation: {
     type: String,
-    required: [true, "Please provide the work experience date"],
+    required: [true, "Please provide the job designation"],
   },
   employmentType: {
     type: String,
     enum: employmentTypeEnum,
-    required: [true, "Please provide the work experience date"],
+    required: [true, "Please provide the employment type"],
   },
   location: {
     type: String,
@@ -47,8 +46,8 @@ const workExperienceSchema = new mongoose.Schema({
   user: {
     type: mongoose.Types.ObjectId,
     ref: "User",
-    required: [true, "Provide user associated to the Work experience"],
+    required: [true, "Provide user associated with the Work Experience"],
   },
 });
 
-module.exports = mongoose.model("WorkExperience", workExperienceSchema);
+export default mongoose.model("WorkExperience", workExperienceSchema);

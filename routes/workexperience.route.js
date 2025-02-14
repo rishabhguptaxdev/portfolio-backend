@@ -1,18 +1,19 @@
-const express = require("express");
-const router = express.Router();
-
-const {
+import express from "express";
+import {
   getAllWorkExperience,
-  addWorkExperience,
   getWorkExperience,
+  addWorkExperience,
   updateWorkExperience,
   deleteWorkExperience,
-} = require("../controllers/workexperience");
-const { isLoggedIn, customRole } = require("../middlewares/user");
+} from "../controllers/workexperience.controller.js";
+import { isLoggedIn, customRole } from "../middlewares/user.middleware.js";
 
+const router = express.Router();
+
+// Routes for Work Experience
 router
   .route("/work-experience")
-  .get(getAllWorkExperience)
+  .get(isLoggedIn, customRole("user"), getAllWorkExperience)
   .post(isLoggedIn, customRole("user"), addWorkExperience);
 
 router
@@ -21,4 +22,4 @@ router
   .patch(isLoggedIn, customRole("user"), updateWorkExperience)
   .delete(isLoggedIn, customRole("user"), deleteWorkExperience);
 
-module.exports = router;
+export { router as workExperienceRoutes };

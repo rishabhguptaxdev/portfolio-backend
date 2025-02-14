@@ -1,6 +1,5 @@
-const sendToken = (user, res) => {
+export const sendToken = (user, res) => {
   const jwtToken = user.getJwtToken();
-
   const options = {
     expiresIn: new Date(Date.now() + process.env.COOKIE_TIME * 60 * 1000),
     httpOnly: true,
@@ -12,5 +11,3 @@ const sendToken = (user, res) => {
     user,
   });
 };
-
-module.exports = sendToken;

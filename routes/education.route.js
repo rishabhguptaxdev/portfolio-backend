@@ -1,18 +1,19 @@
-const express = require("express");
-const router = express.Router();
-
-const {
+import express from "express";
+import {
   getAllEducations,
   getEducationById,
   addEducation,
   updateEducation,
   deleteEducation,
-} = require("../controllers/education");
-const { isLoggedIn, customRole } = require("../middlewares/user");
+} from "../controllers/education.controller.js";
+import { isLoggedIn, customRole } from "../middlewares/user.middleware.js";
 
+const router = express.Router();
+
+// Routes for Education
 router
   .route("/education")
-  .get(getAllEducations)
+  .get(isLoggedIn, customRole("user"), getAllEducations)
   .post(isLoggedIn, customRole("user"), addEducation);
 
 router
@@ -21,4 +22,4 @@ router
   .patch(isLoggedIn, customRole("user"), updateEducation)
   .delete(isLoggedIn, customRole("user"), deleteEducation);
 
-module.exports = router;
+export { router as educationRoutes };

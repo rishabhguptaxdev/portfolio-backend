@@ -1,6 +1,5 @@
-const mongoose = require("mongoose");
-const DatePartsSchema = require("./date");
-const user = require("./user");
+import mongoose from "mongoose";
+import DatePartsSchema from "./date.model.js";
 
 const institutionEnum = ["SCHOOL", "COLLEGE", "REMOTE"];
 
@@ -34,8 +33,8 @@ const educationSchema = new mongoose.Schema({
   user: {
     type: mongoose.Types.ObjectId,
     ref: "User",
-    required: [true, "User associated to institution is required"],
+    required: [true, "User associated with Education is required"],
   },
 });
 
-module.exports = mongoose.model("Education", educationSchema);
+export default mongoose.model("Education", educationSchema);

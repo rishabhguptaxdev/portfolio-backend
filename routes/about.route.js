@@ -1,18 +1,19 @@
-const express = require("express");
-const router = express.Router();
-
-const {
+import express from "express";
+import {
   getAllAbouts,
   getAboutById,
   addAbout,
   updateAbout,
   deleteAbout,
-} = require("../controllers/about");
-const { isLoggedIn, customRole } = require("../middlewares/user");
+} from "../controllers/about.controller.js";
+import { isLoggedIn, customRole } from "../middlewares/user.middleware.js";
 
+const router = express.Router();
+
+// Routes for About
 router
   .route("/about")
-  .get(getAllAbouts)
+  .get(isLoggedIn, customRole("user"), getAllAbouts)
   .post(isLoggedIn, customRole("user"), addAbout);
 
 router
@@ -21,4 +22,4 @@ router
   .patch(isLoggedIn, customRole("user"), updateAbout)
   .delete(isLoggedIn, customRole("user"), deleteAbout);
 
-module.exports = router;
+export { router as aboutRoutes };

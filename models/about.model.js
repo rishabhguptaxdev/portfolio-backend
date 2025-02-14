@@ -1,6 +1,5 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-const user = require("./user");
+import mongoose from "mongoose";
+import validator from "validator";
 
 const skillSchema = new mongoose.Schema({
   skillName: {
@@ -19,7 +18,7 @@ const skillSchema = new mongoose.Schema({
 const aboutSchema = new mongoose.Schema({
   resumeUrl: {
     type: String,
-    validate: [validator.isURL, "Please provide valid resume URL"],
+    validate: [validator.isURL, "Please provide a valid resume URL"],
   },
   introductionContent: {
     type: String,
@@ -35,7 +34,6 @@ const aboutSchema = new mongoose.Schema({
     type: Date,
   },
   yearsOfExperience: {
-    // TODO: This should be derived from all experiences in workexperience model
     type: Number,
   },
   tagline: {
@@ -53,8 +51,8 @@ const aboutSchema = new mongoose.Schema({
   user: {
     type: mongoose.Types.ObjectId,
     ref: "User",
-    required: [true, "User associated to about is required"],
+    required: [true, "User associated with About is required"],
   },
 });
 
-module.exports = mongoose.model("About", aboutSchema);
+export default mongoose.model("About", aboutSchema);

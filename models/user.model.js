@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const bcrypt = require("bcryptjs");
+import mongoose from "mongoose";
+import validator from "validator";
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, "Please provide email"],
-    validate: [validator.isEmail, "Please provide valid email"],
+    validate: [validator.isEmail, "Please provide a valid email"],
     unique: true,
   },
   password: {
@@ -42,42 +42,38 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// encrypt password before saving it -- HOOKS
+// Encrypt password before saving it -- HOOKS
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
   }
-
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-// create and return jwt token
+// Create and return JWT token
 userSchema.methods.getJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRY,
   });
 };
 
-// validate the password with password sent by the user
+// Validate the password with password sent by the user
 userSchema.methods.isValidPassword = async function (passwordSentByUser) {
   return await bcrypt.compare(passwordSentByUser, this.password);
 };
 
-// generate forgot password token(string)
+// Generate forgot password token (string)
 userSchema.methods.getForgotPasswordToken = function () {
   const forgotPasswordToken = crypto.randomBytes(20).toString("hex");
-
-  // getting a hash - make sure to get a hash on backend
+  // Getting a hash - make sure to get a hash on backend
   this.forgotPasswordToken = crypto
     .createHash("sha256")
     .update(forgotPasswordToken)
     .digest("hex");
-
-  // set time of token
+  // Set time of token
   this.forgotPasswordExpiry =
     Date.now() + process.env.FORGOT_TOKEN_EXPIRY * 60 * 1000;
-
   return forgotPasswordToken;
 };
 
-module.exports = mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema);

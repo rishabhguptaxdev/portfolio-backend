@@ -1,18 +1,19 @@
-const express = require("express");
-const router = express.Router();
-
-const {
+import express from "express";
+import {
   getAllTestimonials,
   getTestimonialById,
   addTestimonial,
   updateTestimonial,
   deleteTestimonial,
-} = require("../controllers/testimonial");
-const { isLoggedIn, customRole } = require("../middlewares/user");
+} from "../controllers/testimonial.controller.js";
+import { isLoggedIn, customRole } from "../middlewares/user.middleware.js";
 
+const router = express.Router();
+
+// Routes for Testimonial
 router
   .route("/testimonial")
-  .get(getAllTestimonials)
+  .get(isLoggedIn, customRole("user"), getAllTestimonials)
   .post(isLoggedIn, customRole("user"), addTestimonial);
 
 router
@@ -21,4 +22,4 @@ router
   .patch(isLoggedIn, customRole("user"), updateTestimonial)
   .delete(isLoggedIn, customRole("user"), deleteTestimonial);
 
-module.exports = router;
+export { router as testimonialRoutes };

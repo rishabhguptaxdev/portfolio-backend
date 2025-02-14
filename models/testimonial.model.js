@@ -1,6 +1,5 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-const user = require("./user");
+import mongoose from "mongoose";
+import validator from "validator";
 
 const testimonialSchema = new mongoose.Schema({
   clientName: {
@@ -13,7 +12,7 @@ const testimonialSchema = new mongoose.Schema({
       100,
       "Max length can't be greater than 100 characters for client message",
     ],
-    required: [true, "Please provide client name"],
+    required: [true, "Please provide client message"],
   },
   ratings: {
     type: Number,
@@ -22,13 +21,13 @@ const testimonialSchema = new mongoose.Schema({
   },
   clientAvatarURL: {
     type: String,
-    validate: [validator.isURL, "please provide valid URL for client avatar"],
+    validate: [validator.isURL, "Please provide a valid URL for client avatar"],
   },
   user: {
     type: mongoose.Types.ObjectId,
     ref: "User",
-    required: [true, "Please provide user associcated to client"],
+    required: [true, "Please provide user associated with the testimonial"],
   },
 });
 
-module.exports = mongoose.model("Testimonial", testimonialSchema);
+export default mongoose.model("Testimonial", testimonialSchema);

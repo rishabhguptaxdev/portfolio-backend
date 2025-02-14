@@ -1,18 +1,19 @@
-const express = require("express");
-const router = express.Router();
-
-const {
+import express from "express";
+import {
   getAllProjects,
   getProjectById,
   addProject,
   updateProject,
   deleteProject,
-} = require("../controllers/project");
-const { isLoggedIn, customRole } = require("../middlewares/user");
+} from "../controllers/project.controller.js";
+import { isLoggedIn, customRole } from "../middlewares/user.middleware.js";
 
+const router = express.Router();
+
+// Routes for Project
 router
   .route("/project")
-  .get(getAllProjects)
+  .get(isLoggedIn, customRole("user"), getAllProjects)
   .post(isLoggedIn, customRole("user"), addProject);
 
 router
@@ -21,4 +22,4 @@ router
   .patch(isLoggedIn, customRole("user"), updateProject)
   .delete(isLoggedIn, customRole("user"), deleteProject);
 
-module.exports = router;
+export { router as projectRoutes };

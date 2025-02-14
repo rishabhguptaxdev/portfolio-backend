@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-
 const DatePartsSchema = {
   startYear: Number,
   startMonth: Number,
@@ -9,4 +7,4 @@ const DatePartsSchema = {
   endDay: Number,
 };
 
-module.exports = DatePartsSchema;
+export default DatePartsSchema;

@@ -1,8 +1,8 @@
-const CustomError = require("../utils/CustomErrors");
-const User = require("../models/user");
-const jwt = require("jsonwebtoken");
+import { CustomError } from "../utils/CustomErrors.js";
+import User from "../models/user.model.js";
+import jwt from "jsonwebtoken";
 
-exports.isLoggedIn = async (req, res, next) => {
+export const isLoggedIn = async (req, res, next) => {
   try {
     const token =
       req?.cookies?.token ||
@@ -27,7 +27,7 @@ exports.isLoggedIn = async (req, res, next) => {
   }
 };
 
-exports.customRole = (...roles) => {
+export const customRole = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(

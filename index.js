@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import { connectToDB } from "./config/db.js";
+import { connectToDB } from "./connectors/mongo.connector.js";
 
 // Import routes
 import { educationRoutes } from "./routes/education.route.js";

@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { connectToDB } from "./connectors/mongo.connector.js";
+import cors from "cors";
 
 // Import routes
 import { educationRoutes } from "./routes/education.route.js";
@@ -19,6 +20,7 @@ dotenv.config();
 const app = express();
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

@@ -18,3 +18,15 @@ export const loginUser = async (email, password) => {
   }
   return user;
 };
+
+export const updateUserDetails = async (email, data) => {
+  const user = await User.findOneAndUpdate(
+    { email: email },
+    { $set: data },
+    { new: true, runValidators: true }
+  );
+  if (!user) {
+    throw new Error("User is not registered");
+  }
+  return user;
+};

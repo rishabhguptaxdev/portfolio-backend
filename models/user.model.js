@@ -16,6 +16,16 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, "Please provide a valid email"],
     unique: true,
   },
+  username: {
+    type: String,
+    unique: true,
+    maxlength: [15, "Username length should not exceed 15 characters"],
+    minlength: [7, "Username length should not below 7 characters"],
+    match: [/^[A-Za-z0-9]+$/, "Username can only contain letters and numbers"],
+  },
+  isPortfolioLive: {
+    type: Boolean,
+  },
   password: {
     type: String,
     required: [true, "Please provide password"],

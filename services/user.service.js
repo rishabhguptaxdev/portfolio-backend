@@ -30,3 +30,12 @@ export const updateUserDetails = async (email, data) => {
   }
   return user;
 };
+
+export const getUserDetailsByUsername = async (username) => {
+  const user = await User.findOne({ username });
+  if (!user) {
+    throw new Error("User is not registered");
+  }
+
+  return user;
+};

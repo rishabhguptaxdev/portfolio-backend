@@ -12,6 +12,7 @@ import { testimonialRoutes } from "./routes/testimonial.route.js";
 import { userRoutes } from "./routes/user.route.js";
 import { workExperienceRoutes } from "./routes/workexperience.route.js";
 import { aboutRoutes } from "./routes/about.route.js";
+import { profileRoutes } from "./routes/profile.route.js";
 
 // Load environment variables
 dotenv.config();
@@ -33,6 +34,7 @@ app.use("/api/v1", testimonialRoutes);
 app.use("/api/v1", userRoutes);
 app.use("/api/v1", workExperienceRoutes);
 app.use("/api/v1", aboutRoutes);
+app.use("/api/v1", profileRoutes);
 
 // Health check route
 app.get("/", (req, res) => {
